@@ -1,5 +1,15 @@
 # User Model Service
 
+[![Build Status](https://img.shields.io/travis/sagikazarmark/dashboard.svg?style=flat-square)](https://travis-ci.org/deshboard/user-model-service)
+
+
+## Prerequisites
+
+- up to date [Docker](https://www.docker.com/) (1.13.0 at the moment)
+- up to date [Docker Compose](https://docs.docker.com/compose/) (1.10.0 at the moment)
+- [Glide](http://glide.sh/)
+- make
+
 
 ## Setup
 
@@ -16,7 +26,10 @@ $ make setup
 $ make start
 ```
 
-Then the following ones to install dependencies locally:
+
+## Development
+
+To install Go dependencies locally run the following commands:
 
 ``` bash
 $ make install
