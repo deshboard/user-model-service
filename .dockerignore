@@ -1,0 +1,6 @@
+*
+
+!glide.yaml
+!glide.lock
+!*.go
+*_test.go
