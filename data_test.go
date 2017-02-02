@@ -1,49 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 	"testing"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/bcrypt"
 )
-
-var db *sqlx.DB
-
-func setupDatabase() {
-	db, _ = sqlx.Open(
-		RequireEnv("DATABASE_TYPE"),
-		fmt.Sprintf(
-			"%s:%s@tcp(%s:%s)/%s",
-			RequireEnv("DATABASE_USER"),
-			RequireEnv("DATABASE_PASS"),
-			RequireEnv("DATABASE_HOST"),
-			RequireEnv("DATABASE_PORT"),
-			RequireEnv("DATABASE_DB"),
-		),
-	)
-
-	err := db.Ping()
-	if err != nil {
-		panic(err)
-	}
-
-	cleanupDatabase()
-}
-
-func teardownDatabase() {
-	cleanupDatabase()
-
-	db.Close()
-}
-
-func cleanupDatabase() {
-	db.MustExec("DELETE FROM users")
-}
 
 func TestNewDbUserRepository_Integration(t *testing.T) {
 	if !*integration {

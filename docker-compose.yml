@@ -1,18 +1,8 @@
 version: "2.1"
 
 services:
-    db:
-        image: mariadb:10
-        environment:
-            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-            MYSQL_DATABASE: service
-        volumes:
-            - ./var/mysql:/var/lib/mysql
-
     service: &service
         build: .
-        links:
-            - db
         environment:
             DATABASE_TYPE: mysql
             DATABASE_HOST: db
@@ -24,3 +14,20 @@ services:
     test:
         <<: *service
         command: go test -v -integration
+
+    db:
+        image: mariadb:10
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: service
+        volumes:
+            - ./var/mysql:/var/lib/mysql
+
+    migration:
+        build: migrations/
+        links:
+            - db
+        environment:
+            LIQUIBASE_USERNAME: root
+            LIQUIBASE_PASSWORD: ""
+            LIQUIBASE_URL: jdbc:mysql://db/service

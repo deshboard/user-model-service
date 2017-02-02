@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -46,6 +45,7 @@ func NewApp() (*App, error) {
 }
 
 // Handles application shutdown (closes DB connection, etc)
+// Make sure the process does not exit before this is called
 func (app *App) Shutdown() {
 	app.db.Close()
 }
@@ -64,15 +64,27 @@ func (app *App) CreateHandler() http.Handler {
 	router.HandleFunc("/", app.service.CreateUser).Methods("POST")
 	router.HandleFunc("/{userKey}", app.service.GetUser).Methods("GET")
 
+	router.HandleFunc("/_status/healthz", app.HealthStatus).Methods("GET")
+	router.HandleFunc("/_status/readiness", app.ReadinessStatus).Methods("GET")
+
 	return router
 }
 
-// Tries to find an env var and panics if it's not found
-func RequireEnv(key string) string {
-	value, ok := os.LookupEnv(key)
-	if !ok {
-		panic(fmt.Sprintf("Environment variable %s is mandatory", key))
+// Checks if the app is up and running
+func (app *App) HealthStatus(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("ok"))
+}
+
+// Checks if the app is ready for accepting request (eg. database is available as well)
+func (app *App) ReadinessStatus(w http.ResponseWriter, r *http.Request) {
+	if err := app.db.Ping(); err != nil {
+		w.WriteHeader(http.StatusServiceUnavailable)
+		w.Write([]byte("error"))
+
+		return
 	}
 
-	return value
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("ok"))
 }

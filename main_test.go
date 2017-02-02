@@ -12,13 +12,13 @@ func TestMain(m *testing.M) {
 	flag.Parse()
 
 	if *integration {
-		setupDatabase()
+		integrationSetUp()
 	}
 
 	result := m.Run()
 
 	if *integration {
-		teardownDatabase()
+		integrationTearDown()
 	}
 
 	os.Exit(result)
