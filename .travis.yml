@@ -1,17 +1,45 @@
-language: generic
+language: go
 
-sudo: required
+sudo: false
 
 services:
     - docker
+    - mysql
+
+go:
+    - 1.8.x
+    - tip
 
 env:
     global:
-        DOCKER_COMPOSE_VERSION: 1.10.0
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_USER=root
+        DB_PASS=""
+        DB_NAME=service
 
 before_install:
-    - curl -L https://git.io/vMATh | sh
-before_script: make setup
+    - mkdir -p $HOME/bin
+    - curl -s https://raw.githubusercontent.com/sagikazarmark/traviscripts/e106b6d593915a0cb736919ecb3804e8eb5e0440/scripts/glide.sh | bash
+    - make envcheck
+    - curl -s https://raw.githubusercontent.com/sagikazarmark/traviscripts/072477228717d0d3eb671ae5b767e272d01dd838/scripts/migrate.sh | bash
+
+install: make setup
+
+before_script:
+    - export VERSION=${TRAVIS_TAG:-$TRAVIS_BRANCH}
+    - export DOCKER_IMAGE=deshboard/$(go list . | cut -d '/' -f 3)
+    - mysql -e 'CREATE DATABASE service;'
+    - make migrate
+
 script:
-    - make test
-    - make cs
+    - make ARGS="-tags=integration" check
+    - if [[ $TRAVIS_EVENT_TYPE = push ]]; then make IMAGE=$DOCKER_IMAGE VERSION=$VERSION docker; fi
+
+deploy:
+    provider: script
+    skip_cleanup: true
+    script: docker login -u $DOCKER_USER -p $DOCKER_PASS && docker push $DOCKER_IMAGE
+    on:
+        all_branches: true
+        condition: $TRAVIS_GO_VERSION =~ ^1\.8(\.[0-9]+)?$

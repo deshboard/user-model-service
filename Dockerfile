@@ -1,5 +1,9 @@
-FROM deshboard/go:1.7-onbuild
+FROM scratch
 
-EXPOSE 80
+ARG BINARY_NAME
 
-HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost/_status/healthz || exit 1
+COPY build/$BINARY_NAME /service
+
+EXPOSE 80 10000 10001
+CMD ["/service"]
+HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost:10000/healthz || exit 1
