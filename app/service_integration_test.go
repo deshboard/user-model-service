@@ -5,7 +5,7 @@ package app_test
 import (
 	"testing"
 
-	user "github.com/deshboard/user-model-service/apis/user/v1alpha"
+	user "github.com/deshboard/user-model-service/apis/user/v1alpha1"
 	"github.com/deshboard/user-model-service/app"
 	"golang.org/x/crypto/bcrypt"
 	context "golang.org/x/net/context"
