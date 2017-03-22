@@ -3,7 +3,7 @@ package app
 import (
 	"database/sql"
 
-	"github.com/deshboard/user-model-service/proto/user"
+	user "github.com/deshboard/user-model-service/apis/user/v1alpha1"
 	"github.com/jmoiron/sqlx"
 	"golang.org/x/crypto/bcrypt"
 	context "golang.org/x/net/context"

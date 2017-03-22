@@ -14,8 +14,8 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/Sirupsen/logrus"
+	user "github.com/deshboard/user-model-service/apis/user/v1alpha1"
 	"github.com/deshboard/user-model-service/app"
-	"github.com/deshboard/user-model-service/proto/user"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sagikazarmark/healthz"
 	"github.com/sagikazarmark/serverz"

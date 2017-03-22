@@ -3,8 +3,8 @@ updated: 2017-03-12T00:11:09.506479441+01:00
 imports:
 - name: github.com/airbrake/gobrake
   version: 668876711219e8b0206e2994bf0a59d889c775aa
-- name: github.com/deshboard/deshboard-proto
-  version: 408dfeadff47230c71790e8a3496bd45ae48acd5
+- name: github.com/deshboard/apis
+  version: a775f9ea878772e2c9ea115d278c40b5db512928
 - name: github.com/evalphobia/logrus_fluent
   version: 86bb83d119886b935a52194cad48fd01815b0125
 - name: github.com/fluent/fluent-logger-golang
