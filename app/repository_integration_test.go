@@ -5,14 +5,14 @@ package app_test
 import (
 	"testing"
 
-	user "github.com/deshboard/user-model-service/apis/user/v1alpha1"
-	"github.com/deshboard/user-model-service/app"
+	user "github.com/deshboard/user-service/apis/iam/user/v1alpha1"
+	"github.com/deshboard/user-service/app"
 	"golang.org/x/crypto/bcrypt"
 	context "golang.org/x/net/context"
 )
 
-func TestDbUserRepository_Create(t *testing.T) {
-	service := app.NewService(app.DB)
+func TestUserRepository_Create(t *testing.T) {
+	service := app.NewUserRepository(app.DB)
 	ctx := context.Background()
 
 	newUser := &user.NewUser{
@@ -45,8 +45,8 @@ func TestDbUserRepository_Create(t *testing.T) {
 	}
 }
 
-func TestDbUserRepository_Create_AlreadyExists(t *testing.T) {
-	service := app.NewService(app.DB)
+func TestUserRepository_Create_AlreadyExists(t *testing.T) {
+	service := app.NewUserRepository(app.DB)
 	ctx := context.Background()
 
 	_, err := app.DB.Exec("INSERT INTO users (username, encrypted_password) VALUES ('already_exists', 'encrypted_password')")
@@ -70,8 +70,8 @@ func TestDbUserRepository_Create_AlreadyExists(t *testing.T) {
 	}
 }
 
-func TestDbUserRepository_Get_ById(t *testing.T) {
-	service := app.NewService(app.DB)
+func TestUserRepository_Get_ById(t *testing.T) {
+	service := app.NewUserRepository(app.DB)
 	ctx := context.Background()
 
 	result, err := app.DB.Exec("INSERT INTO users (username, encrypted_password) VALUES ('get_user_by_id', 'encrypted_password')")
@@ -104,8 +104,8 @@ func TestDbUserRepository_Get_ById(t *testing.T) {
 	}
 }
 
-func TestDbUserRepository_Get_ByUsername(t *testing.T) {
-	service := app.NewService(app.DB)
+func TestUserRepository_Get_ByUsername(t *testing.T) {
+	service := app.NewUserRepository(app.DB)
 	ctx := context.Background()
 
 	_, err := app.DB.Exec("INSERT INTO users (username, encrypted_password) VALUES ('get_user_by_username', 'encrypted_password')")
@@ -133,8 +133,8 @@ func TestDbUserRepository_Get_ByUsername(t *testing.T) {
 	}
 }
 
-func TestDbUserRepository_Get_NotFound(t *testing.T) {
-	service := app.NewService(app.DB)
+func TestUserRepository_Get_NotFound(t *testing.T) {
+	service := app.NewUserRepository(app.DB)
 	ctx := context.Background()
 
 	getUser := &user.GetUser{UserKey: &user.GetUser_Username{Username: "get_non_existing_user"}}
