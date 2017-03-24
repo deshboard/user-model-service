@@ -4,7 +4,7 @@ imports:
 - name: github.com/airbrake/gobrake
   version: 668876711219e8b0206e2994bf0a59d889c775aa
 - name: github.com/deshboard/apis
-  version: 1d4bd73bc856b2084dd21a192606e95aefc92311
+  version: b47c6423cf19839f4de7039c8dd820c3dac8e27a
 - name: github.com/evalphobia/logrus_fluent
   version: 86bb83d119886b935a52194cad48fd01815b0125
 - name: github.com/fluent/fluent-logger-golang

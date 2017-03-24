@@ -1,4 +1,4 @@
-package main // import "github.com/deshboard/user-model-service"
+package main // import "github.com/deshboard/user-service"
 
 import (
 	"context"
@@ -14,8 +14,8 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/Sirupsen/logrus"
-	user "github.com/deshboard/user-model-service/apis/user/v1alpha1"
-	"github.com/deshboard/user-model-service/app"
+	user "github.com/deshboard/user-service/apis/iam/user/v1alpha1"
+	"github.com/deshboard/user-service/app"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sagikazarmark/healthz"
 	"github.com/sagikazarmark/serverz"
@@ -60,7 +60,8 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	user.RegisterUserServiceServer(grpcServer, app.NewService(db))
+	user.RegisterUserDirectoryServer(grpcServer, app.NewUserDirectory(db))
+	user.RegisterUserRepositoryServer(grpcServer, app.NewUserRepository(db))
 	grpcServerWrapper := &serverz.NamedServer{
 		Server: &serverz.GrpcServer{grpcServer},
 		Name:   "grpc",

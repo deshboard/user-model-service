@@ -2,8 +2,8 @@ package app
 
 // Service info
 const (
-	ServiceName         = "user.model.service"
-	FriendlyServiceName = "User Model"
+	ServiceName         = "user.service"
+	FriendlyServiceName = "User"
 )
 
 // Provisioned by ldflags

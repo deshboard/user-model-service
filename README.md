@@ -1,6 +1,6 @@
-# User Model Service
+# User Service
 
-[![Build Status](https://img.shields.io/travis/deshboard/user-model-service.svg?style=flat-square)](https://travis-ci.org/deshboard/user-model-service)
+[![Build Status](https://img.shields.io/travis/deshboard/user-service.svg?style=flat-square)](https://travis-ci.org/deshboard/user-service)
 
 
 ## Documentation

@@ -3,7 +3,7 @@ package app
 import (
 	"database/sql"
 
-	user "github.com/deshboard/user-model-service/apis/user/v1alpha1"
+	user "github.com/deshboard/user-service/apis/iam/user/v1alpha1"
 	"github.com/jmoiron/sqlx"
 	"golang.org/x/crypto/bcrypt"
 	context "golang.org/x/net/context"
@@ -19,18 +19,18 @@ var (
 	ErrUserAlreadyExists = grpc.Errorf(codes.AlreadyExists, "user already exists")
 )
 
-// Service implements the Protocol Buffer RPC server
-type Service struct {
+// UserRepository implements the gRPC server
+type UserRepository struct {
 	db *sqlx.DB
 }
 
-// NewService creates a new service object
-func NewService(db *sqlx.DB) *Service {
-	return &Service{db}
+// NewUserRepository creates a new service object
+func NewUserRepository(db *sqlx.DB) *UserRepository {
+	return &UserRepository{db}
 }
 
-// Create implements the user creation method of the UserServiceServer interface
-func (s *Service) Create(ctx context.Context, newUser *user.NewUser) (*user.UserCreated, error) {
+// Create implements the user creation method of the UserRepositoryServer interface
+func (s *UserRepository) Create(ctx context.Context, newUser *user.NewUser) (*user.UserCreated, error) {
 	var existingID int
 
 	err := s.db.QueryRow("SELECT id FROM users WHERE username = ?", newUser.Username).Scan(&existingID)
@@ -64,8 +64,8 @@ func (s *Service) Create(ctx context.Context, newUser *user.NewUser) (*user.User
 	return &user.UserCreated{Id: id}, nil
 }
 
-// Get implements the user lookup method of the UserServiceServer interface
-func (s *Service) Get(ctx context.Context, getUser *user.GetUser) (*user.User, error) {
+// Get implements the user lookup method of the UserRepositoryServer interface
+func (s *UserRepository) Get(ctx context.Context, getUser *user.GetUser) (*user.User, error) {
 	var user user.User
 	var err error
 
